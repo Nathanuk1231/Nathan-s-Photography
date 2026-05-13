@@ -1,1 +1,479 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Nathan Lloyd Photography</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/dist/tabler-icons.min.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --serif:'Playfair Display',Georgia,serif;
+  --sans:'DM Sans',sans-serif;
+  --bg:#0d0d0d;--bg2:#161616;--bg3:#1e1e1e;
+  --gold:#c9a84c;--gold2:#e8c97a;--gold-dim:#3a2e10;
+  --txt:#f0ece4;--txt2:#8a8680;--txt3:#4a4744;
+  --border:rgba(201,168,76,0.15);--border2:rgba(201,168,76,0.3);
+}
+body{font-family:var(--sans);background:var(--bg);color:var(--txt);font-weight:300;font-size:15px;line-height:1.7}
+nav{height:60px;background:rgba(13,13,13,0.95);border-bottom:0.5px solid var(--border);display:flex;align-items:center;justify-content:space-between;padding:0 2.5rem;position:sticky;top:0;z-index:100}
+.logo{font-family:var(--serif);font-size:20px;font-weight:400;color:var(--txt);letter-spacing:0.03em}
+.logo span{color:var(--gold)}
+nav ul{list-style:none;display:flex;gap:2rem}
+nav a{font-size:11px;letter-spacing:0.18em;text-transform:uppercase;color:var(--txt2);text-decoration:none;cursor:pointer;transition:color 0.2s;font-weight:400;background:none;border:none;font-family:var(--sans)}
+nav a:hover,nav a.active{color:var(--gold)}
+#nav-upload-link{display:none}
+section{display:none}
+section.active{display:block}
+
+/* HERO */
+.hero{min-height:calc(100vh - 60px);background:var(--bg);display:flex;flex-direction:column;justify-content:center;padding:0 2.5rem;position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;right:-80px;top:10%;width:420px;height:420px;border:0.5px solid var(--border);border-radius:50%;pointer-events:none}
+.hero::after{content:'';position:absolute;right:20px;top:calc(10% + 40px);width:340px;height:340px;border:0.5px solid var(--border2);border-radius:50%;pointer-events:none}
+.hero-eyebrow{font-size:11px;letter-spacing:0.25em;text-transform:uppercase;color:var(--gold);margin-bottom:1.5rem;display:flex;align-items:center;gap:12px}
+.hero-eyebrow::before{content:'';width:28px;height:0.5px;background:var(--gold)}
+.hero h1{font-family:var(--serif);font-size:clamp(2.8rem,6vw,5rem);font-weight:400;line-height:1.1;color:var(--txt);max-width:600px;margin-bottom:1.25rem}
+.hero h1 em{font-style:italic;color:var(--gold2)}
+.hero-sub{color:var(--txt2);font-size:14px;max-width:400px;margin-bottom:2.5rem;line-height:1.85}
+.hero-btns{display:flex;gap:1rem}
+.btn-gold{background:var(--gold);color:#0d0d0d;border:none;padding:11px 26px;font-family:var(--sans);font-size:11px;letter-spacing:0.15em;text-transform:uppercase;cursor:pointer;font-weight:500;transition:background 0.2s,transform 0.15s}
+.btn-gold:hover{background:var(--gold2);transform:translateY(-1px)}
+.btn-outline{background:transparent;color:var(--gold);border:0.5px solid var(--border2);padding:11px 26px;font-family:var(--sans);font-size:11px;letter-spacing:0.15em;text-transform:uppercase;cursor:pointer;font-weight:400;transition:all 0.2s}
+.btn-outline:hover{border-color:var(--gold);color:var(--gold2)}
+
+/* PAGES */
+.page{padding:3.5rem 2.5rem;background:var(--bg)}
+.sec-head{display:flex;align-items:baseline;gap:1.25rem;margin-bottom:2.5rem}
+.sec-head h2{font-family:var(--serif);font-size:2.2rem;font-weight:400;color:var(--txt)}
+.sec-head span{font-size:10px;letter-spacing:0.2em;text-transform:uppercase;color:var(--gold)}
+
+/* GALLERY */
+.filter-bar{display:flex;gap:8px;margin-bottom:2rem;flex-wrap:wrap}
+.fbtn{padding:5px 16px;font-size:10px;letter-spacing:0.14em;text-transform:uppercase;border:0.5px solid var(--border);background:transparent;color:var(--txt2);cursor:pointer;font-family:var(--sans);transition:all 0.2s;font-weight:400}
+.fbtn:hover,.fbtn.active{background:var(--gold);border-color:var(--gold);color:#0d0d0d}
+.gallery-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.g-item{position:relative;overflow:hidden;cursor:pointer;background:var(--bg3)}
+.g-item:nth-child(5n+1){grid-row:span 2}
+.g-img{width:100%;height:100%;min-height:180px;object-fit:cover;display:block;transition:transform 0.5s ease}
+.g-item:hover .g-img{transform:scale(1.04)}
+.g-overlay{position:absolute;inset:0;background:rgba(13,13,13,0);display:flex;flex-direction:column;justify-content:flex-end;padding:1rem;transition:background 0.3s}
+.g-item:hover .g-overlay{background:rgba(13,13,13,0.65)}
+.g-info{transform:translateY(6px);opacity:0;transition:all 0.3s}
+.g-item:hover .g-info{transform:translateY(0);opacity:1}
+.g-info h4{font-family:var(--serif);font-size:1rem;color:var(--txt);font-weight:400}
+.g-info p{font-size:10px;color:var(--gold);letter-spacing:0.12em;text-transform:uppercase;margin-top:2px}
+.g-remove{position:absolute;top:8px;right:8px;background:rgba(13,13,13,0.75);border:0.5px solid rgba(201,168,76,0.3);color:var(--gold);width:28px;height:28px;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:14px;opacity:0;transition:opacity 0.2s}
+.g-item:hover .g-remove{opacity:1}
+.gallery-empty{grid-column:1/-1;text-align:center;padding:4rem;color:var(--txt3);font-size:13px}
+.gallery-loading{grid-column:1/-1;text-align:center;padding:4rem;color:var(--txt2);font-size:13px}
+
+/* UPLOAD */
+.upload-zone{border:0.5px dashed var(--border2);padding:3rem 2rem;text-align:center;cursor:pointer;transition:all 0.2s;margin-top:1.5rem;background:var(--bg2)}
+.upload-zone:hover,.upload-zone.drag-over{border-color:var(--gold);background:rgba(201,168,76,0.04)}
+.upload-zone i{font-size:32px;color:var(--gold);display:block;margin-bottom:1rem}
+.upload-zone h3{font-family:var(--serif);font-size:1.3rem;font-weight:400;color:var(--txt);margin-bottom:0.5rem}
+.upload-zone p{font-size:13px;color:var(--txt2)}
+.upload-zone small{font-size:11px;color:var(--txt3);margin-top:0.5rem;display:block}
+.utag{padding:4px 14px;border:0.5px solid var(--border);font-size:10px;letter-spacing:0.12em;text-transform:uppercase;cursor:pointer;color:var(--txt2);background:transparent;font-family:var(--sans);transition:all 0.2s}
+.utag:hover,.utag.sel{border-color:var(--gold);color:var(--gold);background:rgba(201,168,76,0.06)}
+.prog-bar{height:2px;background:var(--bg3);margin-top:8px;border-radius:1px}
+.prog-fill{height:100%;background:var(--gold);width:0;transition:width 0.3s;border-radius:1px}
+.alert{padding:0.85rem 1rem;font-size:13px;text-align:center;margin-top:1rem;border:0.5px solid}
+.alert-success{background:rgba(201,168,76,0.08);border-color:var(--border2);color:var(--gold)}
+.alert-error{background:rgba(220,50,50,0.08);border-color:rgba(220,50,50,0.3);color:#e07070}
+
+/* ABOUT */
+#about.active{display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:center;padding:3.5rem 2.5rem;background:var(--bg)}
+.about-img-wrap{position:relative}
+.about-img{width:100%;aspect-ratio:3/4;background:var(--bg3);border:0.5px solid var(--border);display:flex;align-items:center;justify-content:center;color:var(--txt3);font-size:11px;letter-spacing:0.15em;text-transform:uppercase;object-fit:cover}
+.about-img-wrap::after{content:'';position:absolute;top:14px;left:14px;right:-14px;bottom:-14px;border:0.5px solid var(--border);z-index:-1}
+.about-content .sec-head{margin-bottom:1.25rem}
+.about-content p{color:var(--txt2);margin-bottom:1.1rem;font-size:14px;line-height:1.9}
+.gear-card{background:var(--bg2);border:0.5px solid var(--border);padding:1rem 1.25rem;margin:1.5rem 0;display:flex;align-items:center;gap:1rem}
+.gear-card i{font-size:22px;color:var(--gold);flex-shrink:0}
+.gear-card div p:first-child{font-size:13px;font-weight:500;color:var(--txt)}
+.gear-card div p:last-child{font-size:12px;color:var(--txt2)}
+.about-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;margin:1.75rem 0;padding:1.5rem 0;border-top:0.5px solid var(--border);border-bottom:0.5px solid var(--border);text-align:center}
+.stat-num{font-family:var(--serif);font-size:2rem;font-weight:400;color:var(--gold);line-height:1}
+.stat-lbl{font-size:10px;letter-spacing:0.18em;text-transform:uppercase;color:var(--txt2);margin-top:4px}
+
+/* CONTACT */
+#contact.active{display:block;padding:3.5rem 2.5rem;background:var(--bg)}
+.contact-wrap{display:grid;grid-template-columns:1fr 1.4fr;gap:4rem;align-items:start;max-width:860px}
+.contact-info h3{font-family:var(--serif);font-size:1.2rem;font-weight:400;color:var(--txt);margin-bottom:0.75rem}
+.contact-info p{font-size:13px;color:var(--txt2);margin-bottom:1.5rem;line-height:1.85}
+.social-list{display:flex;flex-direction:column;gap:10px}
+.s-link{display:flex;align-items:center;gap:10px;font-size:12px;color:var(--txt2);cursor:pointer;text-decoration:none;transition:color 0.2s;letter-spacing:0.04em}
+.s-link:hover{color:var(--gold)}
+.s-icon{width:34px;height:34px;border:0.5px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:15px;transition:all 0.2s;flex-shrink:0}
+.s-link:hover .s-icon{border-color:var(--gold);background:var(--gold-dim)}
+.cform{display:flex;flex-direction:column;gap:1.1rem}
+.fgrp{display:flex;flex-direction:column;gap:5px}
+.fgrp label{font-size:10px;letter-spacing:0.18em;text-transform:uppercase;color:var(--txt3)}
+.fgrp input,.fgrp textarea{background:var(--bg2);border:0.5px solid var(--border);color:var(--txt);padding:9px 13px;font-family:var(--sans);font-size:13px;font-weight:300;outline:none;transition:border-color 0.2s;width:100%}
+.fgrp input:focus,.fgrp textarea:focus{border-color:var(--gold)}
+.fgrp textarea{min-height:110px;resize:vertical}
+
+/* LOGIN MODAL */
+#login-modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.85);z-index:999;align-items:center;justify-content:center}
+#login-modal.open{display:flex}
+.login-box{background:var(--bg2);border:0.5px solid var(--border2);padding:2.5rem;width:100%;max-width:380px}
+.login-box h2{font-family:var(--serif);font-size:1.6rem;font-weight:400;color:var(--txt);margin-bottom:0.5rem}
+.login-box p{font-size:13px;color:var(--txt2);margin-bottom:2rem}
+.login-box .fgrp{margin-bottom:1rem}
+.login-err{font-size:12px;color:#e07070;margin-top:0.5rem;display:none}
+
+/* UPLOAD section */
+#upload.active{display:block}
+#upload-gate{display:none}
+#upload-gate.active{display:block}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="logo">Nathan <span>Lloyd</span></div>
+  <ul>
+    <li><a class="nav-link active" data-t="home">Home</a></li>
+    <li><a class="nav-link" data-t="gallery">Gallery</a></li>
+    <li><a id="nav-upload-link" class="nav-link" data-t="upload">Upload</a></li>
+    <li><a class="nav-link" data-t="about">About</a></li>
+    <li><a class="nav-link" data-t="contact">Contact</a></li>
+    <li><a id="nav-login" style="cursor:pointer">Login</a></li>
+    <li><a id="nav-logout" style="display:none;cursor:pointer">Logout</a></li>
+  </ul>
+</nav>
+
+<!-- LOGIN MODAL -->
+<div id="login-modal">
+  <div class="login-box">
+    <h2>Admin Login</h2>
+    <p>Enter your credentials to access the upload portal.</p>
+    <div class="fgrp">
+      <label>Email</label>
+      <input type="email" id="login-email" placeholder="your@email.com">
+    </div>
+    <div class="fgrp">
+      <label>Password</label>
+      <input type="password" id="login-password" placeholder="••••••••">
+    </div>
+    <div class="login-err" id="login-err">Incorrect email or password.</div>
+    <br>
+    <button class="btn-gold" id="login-btn" style="width:100%">Login</button>
+    <br><br>
+    <button class="btn-outline" id="login-cancel" style="width:100%">Cancel</button>
+  </div>
+</div>
+
+<!-- HOME -->
+<section id="home" class="active">
+  <div class="hero">
+    <div class="hero-eyebrow">Events · Portraits · Lifestyle</div>
+    <h1>Authentic moments,<br><em>cinematic</em> style</h1>
+    <p class="hero-sub">Professional photography with a focus on natural light, clean composition, and polished results.</p>
+    <div class="hero-btns">
+      <button class="btn-gold nav-link" data-t="gallery">View Gallery</button>
+      <button class="btn-outline nav-link" data-t="contact">Get in Touch</button>
+    </div>
+  </div>
+</section>
+
+<!-- GALLERY -->
+<section id="gallery">
+  <div class="page">
+    <div class="sec-head"><h2>Gallery</h2><span>Selected Work</span></div>
+    <div class="filter-bar">
+      <button class="fbtn active" data-f="all">All</button>
+      <button class="fbtn" data-f="events">Events</button>
+      <button class="fbtn" data-f="portraits">Portraits</button>
+      <button class="fbtn" data-f="lifestyle">Lifestyle</button>
+    </div>
+    <div class="gallery-grid" id="gallery-grid">
+      <div class="gallery-loading"><i class="ti ti-loader" style="font-size:20px;color:var(--gold)"></i><br><br>Loading photos…</div>
+    </div>
+  </div>
+</section>
+
+<!-- UPLOAD (only visible when logged in) -->
+<section id="upload">
+  <div class="page">
+    <div class="sec-head"><h2>Upload Portal</h2><span>SD Card Import</span></div>
+    <p style="color:var(--txt2);font-size:14px;max-width:500px;margin-bottom:1.25rem">Drag photos from your SD card here, or click to browse. Images are saved permanently to your gallery.</p>
+
+    <div style="margin-bottom:1rem">
+      <p style="font-size:11px;letter-spacing:0.15em;text-transform:uppercase;color:var(--txt3);margin-bottom:8px">Category</p>
+      <div style="display:flex;gap:8px;flex-wrap:wrap">
+        <button class="utag sel" data-cat="events">Events</button>
+        <button class="utag" data-cat="portraits">Portraits</button>
+        <button class="utag" data-cat="lifestyle">Lifestyle</button>
+      </div>
+    </div>
+
+    <div class="upload-zone" id="drop-zone">
+      <i class="ti ti-cloud-upload" aria-hidden="true"></i>
+      <h3>Drop photos here</h3>
+      <p>or click to browse your SD card</p>
+      <small>JPG, PNG, WEBP · Multiple files supported</small>
+      <input type="file" id="file-input" multiple accept="image/*" style="display:none">
+    </div>
+
+    <div id="upload-status" style="margin-top:1rem"></div>
+
+    <div id="pending-preview" style="margin-top:1.5rem;display:none">
+      <p style="font-size:11px;letter-spacing:0.15em;text-transform:uppercase;color:var(--txt3);margin-bottom:10px">Preview</p>
+      <div id="preview-grid" style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px"></div>
+      <div style="display:flex;gap:10px;margin-top:1.25rem">
+        <button class="btn-gold" id="confirm-btn">Upload to Gallery</button>
+        <button class="btn-outline" id="cancel-btn">Cancel</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="about-img-wrap">
+    <div class="about-img">Your portrait</div>
+  </div>
+  <div class="about-content">
+    <div class="sec-head"><h2>About</h2><span>Nathan Lloyd</span></div>
+    <p>Professional photography specialising in events, portraits, and lifestyle imagery, with a focus on capturing authentic moments in a clean and cinematic style.</p>
+    <p>Every shoot is approached with attention to detail, natural lighting, and creative composition to deliver polished, high-quality results.</p>
+    <div class="gear-card">
+      <i class="ti ti-camera" aria-hidden="true"></i>
+      <div>
+        <p>Nikon D3200 · AF-S NIKKOR 50mm f/1.8G</p>
+        <p>Sharp detail · smooth bokeh · professional portraits</p>
+      </div>
+    </div>
+    <div class="about-stats">
+      <div><div class="stat-num">3</div><div class="stat-lbl">Specialisms</div></div>
+      <div><div class="stat-num">50mm</div><div class="stat-lbl">Prime lens</div></div>
+      <div><div class="stat-num">f/1.8</div><div class="stat-lbl">Aperture</div></div>
+    </div>
+    <button class="btn-gold nav-link" data-t="contact">Get in touch</button>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="sec-head"><h2>Contact</h2><span>Get in Touch</span></div>
+  <div class="contact-wrap">
+    <div class="contact-info">
+      <h3>Say hello</h3>
+      <p>Have a question or want to know more about my work? Drop me a message and I'll get back to you.</p>
+      <div class="social-list">
+        <a class="s-link" href="https://instagram.com/nathanlloyd2024" target="_blank">
+          <div class="s-icon"><i class="ti ti-brand-instagram" aria-hidden="true"></i></div>
+          @nathanlloyd2024
+        </a>
+        <a class="s-link">
+          <div class="s-icon"><i class="ti ti-mail" aria-hidden="true"></i></div>
+          hello@nathanlloyd.co.uk
+        </a>
+      </div>
+    </div>
+    <div class="cform">
+      <div data-fs-success class="alert alert-success" style="display:none"><i class="ti ti-check" style="font-size:14px;margin-right:6px"></i>Message sent — I'll get back to you soon!</div>
+      <div data-fs-error class="alert alert-error" style="display:none"></div>
+      <form id="contact-form">
+        <div class="fgrp" style="margin-bottom:1.1rem">
+          <label>Name</label>
+          <input type="text" name="name" placeholder="Your name" required data-fs-field>
+          <span data-fs-error="name" style="font-size:12px;color:#e07070"></span>
+        </div>
+        <div class="fgrp" style="margin-bottom:1.1rem">
+          <label>Email</label>
+          <input type="email" name="email" placeholder="your@email.com" required data-fs-field>
+          <span data-fs-error="email" style="font-size:12px;color:#e07070"></span>
+        </div>
+        <div class="fgrp" style="margin-bottom:1.1rem">
+          <label>Message</label>
+          <textarea name="message" placeholder="What's on your mind?" required data-fs-field></textarea>
+          <span data-fs-error="message" style="font-size:12px;color:#e07070"></span>
+        </div>
+        <button type="submit" class="btn-gold" data-fs-submit-btn>Send Message</button>
+      </form>
+    </div>
+  </div>
+</section>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+const SUPABASE_URL = 'https://etjlhaohtdyzhcftqmzb.supabase.co';
+const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImV0amxoYW9odGR5emhjZnRxbXpiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzg2ODk2NDgsImV4cCI6MjA5NDI2NTY0OH0.5bpjkheFXUsVfoGuYHj28xbQYATfAH_wuNMzmG4cfqU';
+const sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+let currentUser = null;
+let selectedCat = 'events';
+let pendingFiles = [];
+
+// NAV
+function navigate(t) {
+  if (t === 'upload' && !currentUser) { openLogin(); return; }
+  document.querySelectorAll('section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.nav-link').forEach(a => a.classList.remove('active'));
+  const sec = document.getElementById(t);
+  if (sec) sec.classList.add('active');
+  document.querySelectorAll(`[data-t="${t}"]`).forEach(a => a.classList.add('active'));
+  if (t === 'gallery') loadGallery();
+}
+
+document.querySelectorAll('[data-t]').forEach(el => {
+  el.addEventListener('click', () => navigate(el.dataset.t));
+});
+
+// AUTH
+function openLogin() { document.getElementById('login-modal').classList.add('open'); }
+function closeLogin() { document.getElementById('login-modal').classList.remove('open'); }
+
+document.getElementById('nav-login').addEventListener('click', openLogin);
+document.getElementById('login-cancel').addEventListener('click', closeLogin);
+
+document.getElementById('login-btn').addEventListener('click', async () => {
+  const email = document.getElementById('login-email').value.trim();
+  const password = document.getElementById('login-password').value;
+  const err = document.getElementById('login-err');
+  err.style.display = 'none';
+  const btn = document.getElementById('login-btn');
+  btn.textContent = 'Logging in…';
+  const { data, error } = await sb.auth.signInWithPassword({ email, password });
+  btn.textContent = 'Login';
+  if (error) { err.style.display = 'block'; return; }
+  closeLogin();
+  setLoggedIn(data.user);
+  navigate('upload');
+});
+
+document.getElementById('nav-logout').addEventListener('click', async () => {
+  await sb.auth.signOut();
+  currentUser = null;
+  document.getElementById('nav-login').style.display = '';
+  document.getElementById('nav-logout').style.display = 'none';
+  document.getElementById('nav-upload-link').style.display = 'none';
+  navigate('home');
+});
+
+function setLoggedIn(user) {
+  currentUser = user;
+  document.getElementById('nav-login').style.display = 'none';
+  document.getElementById('nav-logout').style.display = '';
+  document.getElementById('nav-upload-link').style.display = '';
+}
+
+sb.auth.getSession().then(({ data }) => {
+  if (data.session) setLoggedIn(data.session.user);
+});
+
+// GALLERY
+async function loadGallery(filter = 'all') {
+  const grid = document.getElementById('gallery-grid');
+  grid.innerHTML = '<div class="gallery-loading"><i class="ti ti-loader" style="font-size:20px;color:var(--gold)"></i><br><br>Loading…</div>';
+  const { data, error } = await sb.storage.from('photos').list('', { limit: 200, sortBy: { column: 'created_at', order: 'desc' } });
+  if (error || !data || data.length === 0) {
+    grid.innerHTML = '<div class="gallery-empty">No photos yet.</div>';
+    return;
+  }
+  const items = filter === 'all' ? data : data.filter(f => f.name.startsWith(filter + '_'));
+  if (items.length === 0) { grid.innerHTML = '<div class="gallery-empty">No photos in this category.</div>'; return; }
+  grid.innerHTML = items.map(f => {
+    const url = `${SUPABASE_URL}/storage/v1/object/public/photos/${f.name}`;
+    const label = f.name.replace(/^(events|portraits|lifestyle)_/, '').replace(/\.[^.]+$/, '').replace(/[-_]/g, ' ');
+    const cat = f.name.split('_')[0];
+    return `<div class="g-item" data-name="${f.name}">
+      <img class="g-img" src="${url}" alt="${label}">
+      <div class="g-overlay"><div class="g-info"><h4>${label}</h4><p>${cat}</p></div></div>
+      ${currentUser ? `<div class="g-remove" data-name="${f.name}"><i class="ti ti-x"></i></div>` : ''}
+    </div>`;
+  }).join('');
+  if (currentUser) {
+    grid.querySelectorAll('.g-remove').forEach(btn => {
+      btn.addEventListener('click', async e => {
+        e.stopPropagation();
+        await sb.storage.from('photos').remove([btn.dataset.name]);
+        loadGallery(document.querySelector('.fbtn.active')?.dataset.f || 'all');
+      });
+    });
+  }
+}
+
+document.querySelectorAll('.fbtn').forEach(b => {
+  b.addEventListener('click', () => {
+    document.querySelectorAll('.fbtn').forEach(x => x.classList.remove('active'));
+    b.classList.add('active');
+    loadGallery(b.dataset.f);
+  });
+});
+
+// UPLOAD
+document.querySelectorAll('.utag').forEach(b => {
+  b.addEventListener('click', () => {
+    document.querySelectorAll('.utag').forEach(x => x.classList.remove('sel'));
+    b.classList.add('sel');
+    selectedCat = b.dataset.cat;
+  });
+});
+
+const dz = document.getElementById('drop-zone');
+const fi = document.getElementById('file-input');
+dz.addEventListener('click', () => fi.click());
+dz.addEventListener('dragover', e => { e.preventDefault(); dz.classList.add('drag-over'); });
+dz.addEventListener('dragleave', () => dz.classList.remove('drag-over'));
+dz.addEventListener('drop', e => { e.preventDefault(); dz.classList.remove('drag-over'); handleFiles(e.dataTransfer.files); });
+fi.addEventListener('change', () => handleFiles(fi.files));
+
+function handleFiles(files) {
+  pendingFiles = Array.from(files).filter(f => f.type.startsWith('image/'));
+  const pg = document.getElementById('pending-preview');
+  const prevGrid = document.getElementById('preview-grid');
+  document.getElementById('upload-status').innerHTML = '';
+  prevGrid.innerHTML = '';
+  pendingFiles.forEach(f => {
+    const url = URL.createObjectURL(f);
+    prevGrid.innerHTML += `<div style="aspect-ratio:1;overflow:hidden;background:var(--bg3)"><img src="${url}" alt="${f.name}" style="width:100%;height:100%;object-fit:cover"></div>`;
+  });
+  if (pendingFiles.length > 0) pg.style.display = 'block';
+}
+
+document.getElementById('confirm-btn').addEventListener('click', async () => {
+  if (!pendingFiles.length) return;
+  const btn = document.getElementById('confirm-btn');
+  const status = document.getElementById('upload-status');
+  btn.textContent = 'Uploading…';
+  btn.disabled = true;
+  let uploaded = 0;
+  for (const file of pendingFiles) {
+    const ext = file.name.split('.').pop();
+    const filename = `${selectedCat}_${Date.now()}_${Math.random().toString(36).slice(2)}.${ext}`;
+    const { error } = await sb.storage.from('photos').upload(filename, file, { contentType: file.type });
+    if (!error) uploaded++;
+  }
+  btn.textContent = 'Upload to Gallery';
+  btn.disabled = false;
+  pendingFiles = [];
+  fi.value = '';
+  document.getElementById('pending-preview').style.display = 'none';
+  status.innerHTML = `<div class="alert alert-success"><i class="ti ti-check" style="font-size:14px;margin-right:6px"></i>${uploaded} photo${uploaded !== 1 ? 's' : ''} uploaded successfully.</div>`;
+});
+
+document.getElementById('cancel-btn').addEventListener('click', () => {
+  pendingFiles = [];
+  fi.value = '';
+  document.getElementById('pending-preview').style.display = 'none';
+  document.getElementById('upload-status').innerHTML = '';
+});
+
+// Load gallery on start
+loadGallery();
+</script>
+
+<script>
+  window.formspree = window.formspree || function () { (formspree.q = formspree.q || []).push(arguments); };
+  formspree('initForm', { formElement: '#contact-form', formId: 'mykovrop' });
+</script>
+<script src="https://unpkg.com/@formspree/ajax@1" defer></script>
+</body>
+</html>
 
